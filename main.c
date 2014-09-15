@@ -7,6 +7,7 @@ float safeZone[3];
 float targetRate[3];
 float posAnchor[3];
 float negAnchor[3];
+int var; //var is a value that defines the robot's state
 
 void init(){
 	//Sets State Vars
@@ -18,6 +19,7 @@ void init(){
 	safeZone[2] = 0.0f;
 	negAnchor = {-0.6 , 0 , 0};
 	posAnchor = {0.6 , 0 , 0};
+	var = 0;
 }
 
 void moveToSafeZone(){
@@ -87,11 +89,26 @@ void updatePosition(){
 	}
 }
 
+void decision(){
+	switch (var) {
+		case "int value":
+			//Do stuff
+			break;
+		case "other int value":
+			//Do other stuff
+			break;
+		default:
+			//Else case
+			break;
+	}
+}
+
 void loop(){
 	//This function is called once per second.  Use it to control the satellite.
 	//Check if the photos should be uploaded
 	checkUpload();
 	updatePosition();
+	decision();
 }
 
 
