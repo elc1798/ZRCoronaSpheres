@@ -5,6 +5,8 @@ float myState[12];
 float asteroid[3];
 float safeZone[3];
 float targetRate[3];
+float posAnchor[3];
+float negAnchor[3];
 
 void init(){
 	//Sets State Vars
@@ -14,6 +16,8 @@ void init(){
 	safeZone[0] = 0.4f;
 	safeZone[1] = 0.0f;
 	safeZone[2] = 0.0f;
+	negAnchor = {-0.6 , 0 , 0};
+	posAnchor = {0.6 , 0 , 0};
 }
 
 void moveToSafeZone(){
@@ -44,10 +48,10 @@ void moveToOuter(){
 	if (getDist(position , asteroid) < 0.42) {
 		//Robot must move AWAY from asteroid now
 		if (position[0] < 0) {
-			api.setPositionTarget({-0.6 , 0 , 0});
+			api.setPositionTarget(negAnchor);
 		}
 		else {
-			api.setPositionTarget({0.6 , 0 , 0});
+			api.setPositionTarget(posAnchor);
 		}
 	}
 }
@@ -58,10 +62,10 @@ void moveToInner(){
 	}
 	if (getDist(position , asteroid) < 0.33) {
 		if (position[0] < 0) {
-			api.setPositionTarget({-0.6 , 0 , 0});
+			api.setPositionTarget(negAnchor);
 		}
 		else {
-			api.setPositionTarget({0.6 , 0 , 0});
+			api.setPositionTarget(posAnchor);
 		}
 	}
 }
