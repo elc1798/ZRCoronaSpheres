@@ -8,6 +8,12 @@ float targetRate[3];
 float posAnchor[3];
 float negAnchor[3];
 int var; //var is a value that defines the robot's state
+float distFromAsteroid;
+float coor1[3];
+float coor2[3];
+float coor3[3];
+float coor4[3];
+
 
 void init(){
 	//Sets State Vars
@@ -20,6 +26,8 @@ void init(){
 	negAnchor = {-0.6 , 0 , 0};
 	posAnchor = {0.6 , 0 , 0};
 	var = 0;
+	updatePosition();
+	distFromAsteroid = getDist(position , asteroid);
 }
 
 void moveToSafeZone(){
@@ -40,7 +48,48 @@ float getDist(float start[3] , float end[3]){
 }
 
 void orbit(){
-	
+	//Radius:
+	distFromAsteroid = getDist(position , asteroid);
+	//Build coordinate list (2D Ver.)
+	coor1 = {distFromAsteroid , distFromAsteroid , 0};
+	coor2 = {-1 * distFromAsteroid , distFromAsteroid , 0};
+	coor3 = {-1 * distFromAsteroid , -1 * distFromAsteroid , 0};
+	coor4 = {distFromAsteroid , -1 * distFromAsteroid};
+	//Build States
+	int state;
+	if (position[1] > 0) {
+		if (position[0] > 0) {
+			state = 0;
+		}
+		else {
+			state = 1;
+		}
+	}
+	else {
+		if (position[0] < 0) {
+			state = 3;
+		}
+		else {
+			state = 4;
+		}
+	}
+	//I know the following is conceptually flawed, but it is just a basis for the structure
+	switch (state) {
+		case 0:
+			api.setPositionTarget(coor1);
+			break;
+		case 1:
+			api.setPositionTarget(coor2);
+			break;
+		case 2:
+			api.setPositionTarget(coor3);
+			break;
+		case 3:
+			api.setPositionTarget(coor4);
+			break;
+		default:
+			break;
+	}
 }
 
 void moveToOuter(){
@@ -103,6 +152,14 @@ void decision(){
 		case 1:
 			//State where sphere is in the outer or inner ring
 			orbit();
+			break;
+		case 2:
+			//Sphere in danger zone:
+			moveToOuter();
+			break;
+		case 3:
+			//Solar flare about to occur
+			moveToSafeZone();
 			break;
 		default:
 			//What to do if things aren't done
