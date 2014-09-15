@@ -8,7 +8,7 @@ float targetRate[3];
 
 void init(){
 	//Sets State Vars
-	for (i = 0; i < 3; i++){
+	for (int i = 0; i < 3; i++){
 		asteroid[i] = 0.0f;
 	}
 	safeZone[0] = 0.4f;
@@ -41,7 +41,7 @@ void moveToOuter(){
 	if (getDist(position , asteroid) > 0.5) {
 		api.setPositionTarget(asteroid);
 	}
-	if (getDist(position , asteroid) < 0. 42) {
+	if (getDist(position , asteroid) < 0.42) {
 		//Robot must move AWAY from asteroid now
 		if (position[0] < 0) {
 			api.setPositionTarget({-0.6 , 0 , 0});
@@ -78,7 +78,7 @@ void checkUpload(){
 
 void updatePosition(){
 	api.getMyZRState(myState);
-	for (i = 0; i < 3; i++) {
+	for (int i = 0; i < 3; i++) {
 		position[i] = positionBuffer[i];
 	}
 }
@@ -89,4 +89,5 @@ void loop(){
 	checkUpload();
 	updatePosition();
 }
+
 
