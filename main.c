@@ -1,7 +1,7 @@
 #include <math.h>
 
 float position[3];
-float myState[12];
+ZRState myState;
 float asteroid[3];
 float safeZone[3];
 float targetRate[3];
@@ -85,20 +85,27 @@ void checkUpload(){
 void updatePosition(){
 	api.getMyZRState(myState);
 	for (int i = 0; i < 3; i++) {
-		position[i] = positionBuffer[i];
+		position[i] = myState[i];
 	}
 }
 
 void decision(){
+	//Check var state based on position and time
+	//Use switch statement?????
+
+
+	//Decides what to do based on the value of 'var'
 	switch (var) {
-		case "int value":
-			//Do stuff
+		case 0:
+			//State where sphere is not in either of the zones
+			moveToOuter();
 			break;
-		case "other int value":
-			//Do other stuff
+		case 1:
+			//State where sphere is in the outer or inner ring
+			orbit();
 			break;
 		default:
-			//Else case
+			//What to do if things aren't done
 			break;
 	}
 }
