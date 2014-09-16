@@ -73,19 +73,40 @@ void orbit(){
 			state = 4;
 		}
 	}
-	//I know the following is conceptually flawed, but it is just a basis for the structure
+	//Value of tolerance is subject to tweaking
+	float tolerance = 2.2;
 	switch (state) {
 		case 0:
-			api.setPositionTarget(coor1);
+			if (getDist(coor1 , position) < distFromAsteroid/tolerance) {
+				api.setPositionTarget(coor2);
+			}
+			else {
+				api.setPositionTarget(coor1);
+			}
 			break;
 		case 1:
-			api.setPositionTarget(coor2);
+			if (getDist(coor2 , position) < distFromAsteroid/tolerance) {
+				api.setPositionTarget(coor3);
+			}
+			else {
+				api.setPositionTarget(coor2);
+			}
 			break;
 		case 2:
-			api.setPositionTarget(coor3);
+			if (getDist(coor3 , position) < distFromAsteroid/tolerance) {
+				api.setPositionTarget(coor4);
+			}
+			else {
+				api.setPositionTarget(coor3);
+			}
 			break;
 		case 3:
-			api.setPositionTarget(coor4);
+			if (getDist(coor4 , position) < distFromAsteroid/tolerance) {
+				api.setPositionTarget(coor1);
+			}
+			else {
+				api.setPositionTarget(coor4);
+			}
 			break;
 		default:
 			break;
