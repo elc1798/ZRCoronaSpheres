@@ -162,8 +162,19 @@ void updatePosition(){
 void decision(){
 	//Check var state based on position and time
 	//Use switch statement?????
-
-
+	if (getDist(position , asteroid) > 0.5) {
+		var = 0;
+	}
+	else {
+		var = 1;
+		if (getDist(position , asteroid) < 0.255) {
+			//CRASH IMMINENT! GET OUT!
+			var = 2;
+		}
+		if (game.getNextFlare() < 15) {
+			var = 3;
+		}
+	}
 	//Decides what to do based on the value of 'var'
 	switch (var) {
 		case 0:
