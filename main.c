@@ -13,12 +13,14 @@ float coor1[3];
 float coor2[3];
 float coor3[3];
 float coor4[3];
-
+float poiLOC[3];
+int poiID;
 
 void init(){
 	//Sets State Vars
 	for (int i = 0; i < 3; i++){
 		asteroid[i] = 0.0f;
+		poiLOC[i] = 0.0f;
 	}
 	safeZone[0] = 0.4f;
 	safeZone[1] = 0.0f;
@@ -26,6 +28,7 @@ void init(){
 	negAnchor = {-0.6 , 0 , 0};
 	posAnchor = {0.6 , 0 , 0};
 	var = 0;
+	poiID = 0;
 	updatePosition();
 	distFromAsteroid = getDist(position , asteroid);
 }
@@ -47,9 +50,18 @@ float getDist(float start[3] , float end[3]){
 	return sqrt(pow(start[0] - end[0] , 2) + pow(start[1] - end[1] , 2) + pow(start[2] - end[2] , 2));
 }
 
+void checkForPOI() {
+	if (game.alignLine() == True) {
+		game.getPOILoc(poiLOC , poiID);
+		game.takePic(myState , poiLOC);
+	}
+}
+
 void orbit(){
+	checkForPOI();
 	//Radius:
 	distFromAsteroid = getDist(position , asteroid);
+	api.setAttitudeTarget(asteroid);
 	//Build coordinate list (2D Ver.)
 	coor1 = {distFromAsteroid , distFromAsteroid , 0};
 	coor2 = {-1 * distFromAsteroid , distFromAsteroid , 0};
@@ -114,6 +126,7 @@ void orbit(){
 }
 
 void moveToOuter(){
+	api.setAttitudeTarget(asteroid);
 	if (getDist(position , asteroid) > 0.5) {
 		api.setPositionTarget(asteroid);
 	}
@@ -129,6 +142,7 @@ void moveToOuter(){
 }
 
 void moveToInner(){
+	api.setAttitudeTarget(asteroid);
 	if (getDist(position , asteroid) > 0.33) {
 		api.setPositionTarget(asteroid);
 	}
